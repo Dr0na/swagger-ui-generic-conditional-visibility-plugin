@@ -1,0 +1,28 @@
+{
+  "name": "@vnalwar/swagger-ui-generic-conditional-visibility",
+  "version": "1.0.0",
+  "description": "Generic Swagger UI plugin for x-conditional cascading parameters and request-body resolution",
+  "license": "Apache-2.0",
+  "main": "dist/generic-conditional-visibility-plugin.js",
+  "files": [
+    "dist",
+    "docs",
+    "examples"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "swagger-ui",
+    "openapi",
+    "x-conditional",
+    "x-visibility",
+    "plugin",
+    "conditional-visibility"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vnalwar/swagger-ui-generic-conditional-visibility.git"
+  }
+}
