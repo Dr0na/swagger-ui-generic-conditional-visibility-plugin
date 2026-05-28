@@ -9,7 +9,9 @@ npm run build
 npm run demo
 ```
 
-Open [http://localhost:9080/demo/](http://localhost:9080/demo/) (port **9080**; the repo root redirects to `/demo/`).
+**GitHub Pages:** [https://dr0na.github.io/swagger-ui-generic-conditional-visibility-plugin/](https://dr0na.github.io/swagger-ui-generic-conditional-visibility-plugin/)
+
+**Local:** [http://localhost:9080/demo/](http://localhost:9080/demo/) (port **9080**; the repo root redirects to `/demo/`).
 
 `npm run demo` runs `build` then `http-server` at the repository root.
 

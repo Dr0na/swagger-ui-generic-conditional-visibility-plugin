@@ -141,7 +141,9 @@ npm run build
 npm run demo
 ```
 
-Open [http://localhost:9080/demo/](http://localhost:9080/demo/) — catalog (2 path selectors) and deployments (path + path + header). Full walkthrough and screenshots: [docs/DEMOS.md](./docs/DEMOS.md).
+**Live (GitHub Pages):** [https://dr0na.github.io/swagger-ui-generic-conditional-visibility-plugin/](https://dr0na.github.io/swagger-ui-generic-conditional-visibility-plugin/)
+
+**Local:** [http://localhost:9080/demo/](http://localhost:9080/demo/) (`npm run demo`). Full walkthrough and screenshots: [docs/DEMOS.md](./docs/DEMOS.md).
 
 ### Catalog demo (2 selectors)
 
