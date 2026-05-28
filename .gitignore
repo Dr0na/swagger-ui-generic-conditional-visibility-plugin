@@ -1,5 +1,7 @@
 node_modules/
 dist/
 spring-boot-starter/target/
+release-assets/
 .DS_Store
 *.log
+.git-rewrite/

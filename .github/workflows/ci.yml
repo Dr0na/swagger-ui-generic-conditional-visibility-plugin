@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build plugin bundle
+        run: npm run build
+
+      - name: Verify bundle exists
+        run: test -s dist/generic-conditional-visibility-plugin.js
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Build Spring Boot starter
+        working-directory: spring-boot-starter
+        run: mvn -B package -DskipTests
+
+      - name: Verify starter JAR contains plugin bundle
+        run: |
+          JAR=$(ls spring-boot-starter/target/swagger-ui-generic-conditional-visibility-spring-boot-starter-*.jar)
+          jar tf "$JAR" | grep swagger-ui-plugins/generic-conditional-visibility-plugin.js

@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build plugin bundle
+        run: npm run build
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Build Spring Boot starter
+        working-directory: spring-boot-starter
+        run: mvn -B package -DskipTests
+
+      - name: Prepare release assets
+        run: |
+          mkdir -p release-assets
+          cp dist/generic-conditional-visibility-plugin.js release-assets/
+          cp spring-boot-starter/target/swagger-ui-generic-conditional-visibility-spring-boot-starter-*.jar release-assets/
+          (cd release-assets && sha256sum * > SHA256SUMS.txt)
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: release-assets/*

@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.github.vnalwar</groupId>
+  <groupId>io.github.dr0na</groupId>
   <artifactId>swagger-ui-generic-conditional-visibility-spring-boot-starter</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>

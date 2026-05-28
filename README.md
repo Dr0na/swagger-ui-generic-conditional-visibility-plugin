@@ -1,5 +1,7 @@
 # swagger-ui-generic-conditional-visibility-plugin
 
+[![CI](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/actions/workflows/ci.yml)
+
 A **domain-neutral** Swagger UI plugin that drives cascading parameter selectors and optional request-body schema/example resolution from OpenAPI extensions. Use it in any microservice that exposes springdoc/Swagger UI and needs parameters to drive which request-body schema applies.
 
 ---

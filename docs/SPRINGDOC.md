@@ -14,7 +14,7 @@ Build the plugin bundle first (`npm run build` in this repo), then install the s
 
 ```xml
 <dependency>
-  <groupId>io.github.vnalwar</groupId>
+  <groupId>io.github.dr0na</groupId>
   <artifactId>swagger-ui-generic-conditional-visibility-spring-boot-starter</artifactId>
   <version>1.0.0</version>
 </dependency>

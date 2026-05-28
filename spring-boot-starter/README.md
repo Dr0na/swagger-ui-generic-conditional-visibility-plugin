@@ -20,7 +20,7 @@ mvn install
   <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 </dependency>
 <dependency>
-  <groupId>io.github.vnalwar</groupId>
+  <groupId>io.github.dr0na</groupId>
   <artifactId>swagger-ui-generic-conditional-visibility-spring-boot-starter</artifactId>
   <version>1.0.0</version>
 </dependency>
