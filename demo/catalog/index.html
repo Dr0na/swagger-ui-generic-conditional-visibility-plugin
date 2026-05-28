@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo: 2-level catalog (path + path)</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swagger-ui-dist@5.18.2/swagger-ui.css"
+    />
+    <link rel="stylesheet" href="../shared/demo.css" />
+  </head>
+  <body>
+    <header class="demo-header">
+      <div>
+        <h1>Catalog demo <span class="demo-badge">2 selectors · path</span></h1>
+        <p>POST /catalog/{region}/{tier} — body hidden until region and tier are chosen</p>
+      </div>
+      <div>
+        <a href="/demo/">← All demos</a>
+        &nbsp;·&nbsp;
+        <a href="/docs/DEMOS.md">Documentation</a>
+      </div>
+    </header>
+    <div id="swagger-ui"></div>
+    <script src="https://unpkg.com/swagger-ui-dist@5.18.2/swagger-ui-bundle.js" charset="UTF-8"></script>
+    <script src="../../dist/generic-conditional-visibility-plugin.js"></script>
+    <script src="../shared/swagger-init.js"></script>
+    <script>
+      window.onload = function () {
+        initConditionalVisibilityDemo("./openapi.yaml");
+      };
+    </script>
+  </body>
+</html>

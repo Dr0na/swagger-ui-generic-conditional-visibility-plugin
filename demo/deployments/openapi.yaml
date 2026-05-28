@@ -1,0 +1,122 @@
+openapi: 3.1.0
+info:
+  title: Deployments API (3-level demo)
+  version: 1.0.0
+  description: |
+    Three selectors: `region` and `tier` (path), `X-Channel` (header).
+    Demonstrates mixed parameter locations and a three-part composite map key.
+
+paths:
+  /deployments/{region}/{tier}:
+    post:
+      summary: Deploy workload
+      description: |
+        **Demo flow:** select region → tier → channel. Each step filters the next dropdown.
+        The resolved schema panel updates as you complete the chain.
+      x-conditional:
+        mode: cascade-bound-body
+        keyJoin: "|"
+        selectors:
+          - name: region
+            in: path
+          - name: tier
+            in: path
+          - name: X-Channel
+            in: header
+      x-conditional-enum-map:
+        region:
+          us-east:
+            tier:
+              gold:
+                X-Channel: [web, mobile]
+              silver:
+                X-Channel: [web]
+          eu-west:
+            tier:
+              gold:
+                X-Channel: [web]
+      x-conditional-schema-map:
+        us-east|gold|web: GoldWebDeployConfig
+        us-east|gold|mobile: GoldMobileDeployConfig
+        us-east|silver|web: SilverWebDeployConfig
+        eu-west|gold|web: GoldWebDeployConfig
+      x-conditional-example-map:
+        us-east|gold|web:
+          replicaCount: 3
+          ingressHost: app.example.com
+        us-east|gold|mobile:
+          replicaCount: 2
+          pushEnabled: true
+        us-east|silver|web:
+          replicaCount: 1
+          ingressHost: silver.example.com
+      parameters:
+        - name: region
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: tier
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: X-Channel
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/GoldWebDeployConfig"
+                - $ref: "#/components/schemas/GoldMobileDeployConfig"
+                - $ref: "#/components/schemas/SilverWebDeployConfig"
+      responses:
+        "200":
+          description: Accepted
+
+components:
+  schemas:
+    GoldWebDeployConfig:
+      type: object
+      required: [replicaCount, ingressHost]
+      x-visibility:
+        when:
+          region: us-east
+          tier: gold
+          X-Channel: web
+      properties:
+        replicaCount:
+          type: integer
+        ingressHost:
+          type: string
+
+    GoldMobileDeployConfig:
+      type: object
+      x-visibility:
+        when:
+          region: us-east
+          tier: gold
+          X-Channel: mobile
+      properties:
+        replicaCount:
+          type: integer
+        pushEnabled:
+          type: boolean
+
+    SilverWebDeployConfig:
+      type: object
+      x-visibility:
+        when:
+          region: us-east
+          tier: silver
+          X-Channel: web
+      properties:
+        replicaCount:
+          type: integer
+        ingressHost:
+          type: string

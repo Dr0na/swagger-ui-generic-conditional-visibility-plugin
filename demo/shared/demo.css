@@ -1,0 +1,120 @@
+:root {
+  --bg: #0f172a;
+  --panel: #1e293b;
+  --border: #334155;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --accent: #38bdf8;
+  --accent-dim: rgba(56, 189, 248, 0.12);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+.demo-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(90deg, #0b1220, #1e293b);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.demo-header h1 { margin: 0; font-size: 18px; font-weight: 600; }
+.demo-header p { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+.demo-header a { color: var(--accent); text-decoration: none; font-size: 14px; }
+.demo-header a:hover { text-decoration: underline; }
+.demo-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+/*
+ * Swagger UI is a light theme (swagger-ui.css). The demo header uses a dark
+ * chrome; without isolation, body { color } inherits into Swagger UI and
+ * transparent inner wrappers show the dark page behind white panels.
+ */
+#swagger-ui {
+  max-width: 100%;
+  background: #fff;
+  color: #3b4151;
+  color-scheme: light;
+  min-height: calc(100vh - 72px);
+  padding: 8px 0 32px;
+}
+#swagger-ui .swagger-ui {
+  background: #fff;
+  color: #3b4151;
+}
+#swagger-ui a {
+  color: #4990e2;
+}
+#swagger-ui a:hover {
+  color: #1f69c0;
+}
+#swagger-ui .swagger-ui .info .title,
+#swagger-ui .swagger-ui .info p,
+#swagger-ui .swagger-ui .info li,
+#swagger-ui .swagger-ui .info table,
+#swagger-ui .swagger-ui .opblock-tag,
+#swagger-ui .swagger-ui .opblock .opblock-summary-path,
+#swagger-ui .swagger-ui .opblock .opblock-summary-description,
+#swagger-ui .swagger-ui .parameter__name,
+#swagger-ui .swagger-ui .parameter__type,
+#swagger-ui .swagger-ui .model-title,
+#swagger-ui .swagger-ui .model,
+#swagger-ui .swagger-ui section.models h4,
+#swagger-ui .swagger-ui section.models h4 span {
+  color: #3b4151;
+}
+#swagger-ui .swagger-ui .info .title small {
+  color: #606060;
+}
+#swagger-ui .swagger-ui section.models {
+  background: #fff;
+  border-color: rgba(59, 65, 81, 0.2);
+}
+#swagger-ui .swagger-ui .model-box {
+  background: rgba(0, 0, 0, 0.05);
+}
+#swagger-ui .swagger-ui .opblock-tag {
+  border-bottom-color: rgba(59, 65, 81, 0.2);
+}
+/* Plugin UI (injected styles target light backgrounds) */
+#swagger-ui .gcv-selectors--banner {
+  background: rgba(97, 175, 254, 0.08);
+  color: #3b4151;
+}
+#swagger-ui .gcv-panel {
+  background: #fafafa;
+  border-color: #e8e8e8;
+  color: #3b4151;
+}
+#swagger-ui .gcv-panel--empty p {
+  color: #666;
+}
+#swagger-ui .gcv-hint,
+#swagger-ui .gcv-prop__key,
+#swagger-ui .gcv-prop__type {
+  color: #888;
+}
+#swagger-ui .gcv-prop__name {
+  color: #4990e2;
+}
+@media (prefers-color-scheme: dark) {
+  #swagger-ui,
+  #swagger-ui .swagger-ui {
+    background: #fff;
+    color: #3b4151;
+    color-scheme: light;
+  }
+}
+.swagger-ui .topbar { display: none; }

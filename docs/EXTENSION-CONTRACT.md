@@ -1,6 +1,6 @@
 # OpenAPI extension contract
 
-This document is the normative specification for OpenAPI metadata consumed by **swagger-ui-generic-conditional-visibility**. Any valid OpenAPI 3.x document can use these extensions; there are no domain-specific names.
+This document is the normative specification for OpenAPI metadata consumed by **swagger-ui-generic-conditional-visibility-plugin**. Any valid OpenAPI 3.x document can use these extensions; there are no domain-specific names.
 
 ## Overview
 

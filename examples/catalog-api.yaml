@@ -1,0 +1,99 @@
+openapi: 3.1.0
+info:
+  title: Product catalog API (2-level demo)
+  version: 1.0.0
+  description: |
+    Two path parameters (`region`, `tier`) drive request-body schema resolution.
+    Use this spec with the **Catalog** demo page.
+
+paths:
+  /catalog/{region}/{tier}:
+    post:
+      summary: Create catalog entry
+      description: |
+        **Demo flow:** pick `region`, then `tier`. Request-body Example Value and Schema
+        appear only after both are selected.
+      x-conditional:
+        mode: cascade-bound-body
+        keyJoin: "|"
+        selectors:
+          - name: region
+            in: path
+          - name: tier
+            in: path
+      x-conditional-enum-map:
+        region:
+          us-east:
+            tier: [gold, silver]
+          eu-west:
+            tier: [gold]
+      x-conditional-schema-map:
+        us-east|gold: GoldCatalogConfig
+        us-east|silver: SilverCatalogConfig
+        eu-west|gold: GoldCatalogConfig
+      x-conditional-example-map:
+        us-east|gold:
+          skuPrefix: GOLD-US-EAST
+          maxItems: 500
+        us-east|silver:
+          skuPrefix: SLV-US-EAST
+          maxItems: 200
+        eu-west|gold:
+          skuPrefix: GOLD-EU
+          maxItems: 300
+      parameters:
+        - name: region
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [us-east, eu-west]
+        - name: tier
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [gold, silver]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/GoldCatalogConfig"
+                - $ref: "#/components/schemas/SilverCatalogConfig"
+      responses:
+        "201":
+          description: Created
+
+components:
+  schemas:
+    GoldCatalogConfig:
+      type: object
+      required: [skuPrefix, maxItems]
+      description: Gold tier catalog limits
+      x-visibility:
+        when:
+          region: us-east
+          tier: gold
+      properties:
+        skuPrefix:
+          type: string
+          example: GOLD
+        maxItems:
+          type: integer
+          example: 500
+
+    SilverCatalogConfig:
+      type: object
+      required: [skuPrefix, maxItems]
+      description: Silver tier catalog limits
+      x-visibility:
+        when:
+          region: us-east
+          tier: silver
+      properties:
+        skuPrefix:
+          type: string
+        maxItems:
+          type: integer

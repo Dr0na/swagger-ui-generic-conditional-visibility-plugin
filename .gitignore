@@ -1,4 +1,5 @@
 node_modules/
 dist/
+spring-boot-starter/target/
 .DS_Store
 *.log

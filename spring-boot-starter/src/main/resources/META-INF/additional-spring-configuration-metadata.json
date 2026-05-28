@@ -1,0 +1,22 @@
+{
+  "properties": [
+    {
+      "name": "swagger.ui.conditional-visibility.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "Register the generic conditional-visibility Swagger UI plugin with springdoc."
+    },
+    {
+      "name": "swagger.ui.conditional-visibility.plugin-location",
+      "type": "java.lang.String",
+      "defaultValue": "swagger-ui-plugins/generic-conditional-visibility-plugin.js",
+      "description": "Classpath path to the plugin bundle."
+    },
+    {
+      "name": "swagger.ui.conditional-visibility.expose-static-resource",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "Serve /swagger-ui-plugins/** from the classpath (optional; inlining does not need this)."
+    }
+  ]
+}

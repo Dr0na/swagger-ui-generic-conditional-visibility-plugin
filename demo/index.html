@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generic conditional visibility — live demos</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --panel: #1e293b;
+        --border: #334155;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --accent: #38bdf8;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+      header {
+        padding: 32px 24px 24px;
+        text-align: center;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(180deg, #0b1220, var(--bg));
+      }
+      header h1 { margin: 0 0 8px; font-size: 26px; }
+      header p { margin: 0; color: var(--muted); max-width: 640px; margin-inline: auto; }
+      main { max-width: 960px; margin: 0 auto; padding: 32px 24px 48px; }
+      h2 { font-size: 18px; margin: 32px 0 16px; color: var(--accent); }
+      .cards { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .card h3 { margin: 0; font-size: 17px; }
+      .card p { margin: 0; font-size: 14px; color: var(--muted); flex: 1; }
+      .card ul { margin: 0; padding-left: 18px; font-size: 13px; color: var(--muted); }
+      .card a.btn {
+        display: inline-block;
+        text-align: center;
+        padding: 10px 16px;
+        background: rgba(56, 189, 248, 0.15);
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .card a.btn:hover { background: rgba(56, 189, 248, 0.28); }
+      .steps {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 20px 24px;
+        font-size: 14px;
+      }
+      .steps code { color: var(--accent); }
+      footer {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+        font-size: 13px;
+        color: var(--muted);
+      }
+      footer a { color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>swagger-ui-generic-conditional-visibility-plugin</h1>
+      <p>
+        Interactive demos: cascading parameters and request-body schema resolution from
+        OpenAPI extensions — no server required.
+      </p>
+    </header>
+    <main>
+      <div class="steps">
+        <strong>Run locally</strong>
+        <pre style="margin: 8px 0 0; overflow-x: auto;"><code>npm run build
+npm run demo
+# open http://localhost:9080/demo/</code></pre>
+      </div>
+
+      <h2>Live demos</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>Catalog (2-level)</h3>
+          <p>Path parameters only. See the request body stay hidden until both <code>region</code> and <code>tier</code> are selected.</p>
+          <ul>
+            <li>2 path selectors</li>
+            <li>Gated Example Value / Schema</li>
+            <li>Distinct JSON per combination</li>
+          </ul>
+          <a class="btn" href="./catalog/">Open catalog demo →</a>
+        </article>
+        <article class="card">
+          <h3>Deployments (3-level)</h3>
+          <p>Path + header. Third selector <code>X-Channel</code> shows mixed <code>in</code> support.</p>
+          <ul>
+            <li>2 path + 1 header</li>
+            <li>Nested enum map</li>
+            <li>Resolved schema banner</li>
+          </ul>
+          <a class="btn" href="./deployments/">Open deployments demo →</a>
+        </article>
+      </div>
+
+      <h2>What to try in each demo</h2>
+      <ol style="font-size: 14px; color: var(--muted);">
+        <li>Expand the POST operation.</li>
+        <li>Notice request body shows a gate message before selectors are complete.</li>
+        <li>Pick the first selector — body still hidden; second selector enables.</li>
+        <li>Complete all selectors — Example Value and Schema match one DTO, not the full <code>oneOf</code>.</li>
+        <li>Change an earlier selector — downstream values and body reset.</li>
+      </ol>
+
+      <footer>
+        <a href="/README.md">README</a> ·
+        <a href="/docs/DEMOS.md">Demo guide</a> ·
+        <a href="/docs/EXTENSION-CONTRACT.md">Extension contract</a>
+      </footer>
+    </main>
+  </body>
+</html>

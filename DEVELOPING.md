@@ -1,6 +1,6 @@
 # Developer guide
 
-How **swagger-ui-generic-conditional-visibility** is built, how Swagger UI plugins work in general, and how to extend or debug this implementation.
+How **swagger-ui-generic-conditional-visibility-plugin** is built, how Swagger UI plugins work in general, and how to extend or debug this implementation.
 
 **Specification for API authors:** [docs/EXTENSION-CONTRACT.md](./docs/EXTENSION-CONTRACT.md)  
 **Copy-paste patterns:** [docs/EXAMPLES.md](./docs/EXAMPLES.md)
@@ -21,7 +21,7 @@ How **swagger-ui-generic-conditional-visibility** is built, how Swagger UI plugi
 10. [Request body pipeline](#10-request-body-pipeline)
 11. [Adding features](#11-adding-features)
 12. [Testing and debugging](#12-testing-and-debugging)
-13. [Comparison with swagger-ui-conditional-visibility](#13-comparison-with-swagger-ui-conditional-visibility)
+13. [Extension naming and migration](#13-extension-naming-and-migration)
 14. [Further reading](#14-further-reading)
 
 ---
@@ -30,7 +30,7 @@ How **swagger-ui-generic-conditional-visibility** is built, how Swagger UI plugi
 
 | Goal | Implementation |
 |------|----------------|
-| Domain-neutral extensions | `x-conditional-*`, not `x-logsource-*` |
+| Domain-neutral extensions | `x-conditional-*` (configurable via `extensionNames`) |
 | N-level hierarchy | Ordered `selectors` array, any length |
 | Any parameter location | `in: path \| query \| header` per selector |
 | Opt-in per operation | Only operations with `x-conditional` are wrapped |
@@ -358,18 +358,19 @@ Serve the repo root with any static server (`npx serve .`).
 
 ---
 
-## 13. Comparison with swagger-ui-conditional-visibility
+## 13. Extension naming and migration
 
-| Aspect | Log-source plugin | This repo (generic) |
-|--------|-------------------|---------------------|
-| Extension prefix | `x-logsource-*` | `x-conditional-*` |
-| Selectors | Fixed vendor/device |任意 N, path/query/header |
-| Redux state | `{ vendor, device }` | `{ [param]: value }` |
-| Enum map | Vendor/device only | Nested by selector name |
-| Global name | `SwaggerUIConditionalVisibilityPlugin` | `SwaggerUIGenericConditionalVisibilityPlugin` |
-| Config | None | `extensionNames`, `keyJoin`, etc. |
+This plugin uses **generic** extension names (`x-conditional`, `x-conditional-enum-map`, and related maps). You can rename them at runtime via `extensionNames` if a service already uses different keys.
 
-Both can coexist in different apps; do not load both on the same page (duplicate wraps).
+| Capability | This plugin |
+|------------|-------------|
+| Selectors |任意 N, `path` / `query` / `header` per selector |
+| Redux state | `{ [paramName]: value }` per operation |
+| Enum map | Nested tree keyed by selector name |
+| Global factory | `SwaggerUIGenericConditionalVisibilityPlugin` |
+| Config | `extensionNames`, `keyJoin`, `leafKeyOnly`, `pluginKey`, … |
+
+Legacy operation aliases such as `and-visibility: vendor-device-bound` map to `cascade-bound-body` for older specs only—prefer `x-conditional.mode` in new OpenAPI documents.
 
 ---
 

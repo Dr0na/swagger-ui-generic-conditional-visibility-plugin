@@ -1,13 +1,55 @@
-# swagger-ui-generic-conditional-visibility
+# swagger-ui-generic-conditional-visibility-plugin
 
-A **domain-neutral** Swagger UI plugin that drives cascading parameter selectors and optional request-body schema/example resolution from OpenAPI extensions—no vendor- or product-specific field names.
+A **domain-neutral** Swagger UI plugin that drives cascading parameter selectors and optional request-body schema/example resolution from OpenAPI extensions. Use it in any microservice that exposes springdoc/Swagger UI and needs parameters to drive which request-body schema applies.
 
-Use it for any API where:
+---
 
-- Several **path**, **query**, or **header** parameters must be chosen in order, and
-- The **request body** shape (or example JSON) depends on that combination.
+## The problem this plugin solves
 
-**Related project:** [swagger-ui-conditional-visibility](../swagger-ui-conditional-visibility) is an older, log-source–focused variant. This repository is the generic replacement; the original repo is unchanged.
+Many APIs expose **one operation** whose behaviour depends on a **combination of inputs**—path segments, query flags, headers—and whose **JSON body** is validated against **different DTOs** depending on that combination.
+
+A common OpenAPI pattern is a single request body with `oneOf` over every variant:
+
+```yaml
+requestBody:
+  content:
+    application/json:
+      schema:
+        oneOf:
+          - $ref: "#/components/schemas/ConfigA"
+          - $ref: "#/components/schemas/ConfigB"
+          - $ref: "#/components/schemas/ConfigC"
+```
+
+### What goes wrong in stock Swagger UI
+
+| Issue | What the user sees |
+|-------|-------------------|
+| **Wrong default example** | Example Value shows the **first** `oneOf` branch (often unrelated to their path/query choices). |
+| **Misleading schema** | Schema tab lists “One of” with all variants, not the one that matches the selected parameters. |
+| **No cascading UX** | Path/query parameters are independent text fields; nothing enforces “pick A before B” or filters allowed values. |
+| **Try it out confusion** | Developers send requests with a body that does not match the parameter combination the server will use to deserialize. |
+
+The server may still validate correctly at runtime (using path params + a custom resolver), but **API explorers lie about the contract**—which slows onboarding, causes bad test payloads, and undermines trust in generated docs.
+
+### What this plugin does
+
+For operations annotated with `x-conditional` and related maps (see [docs/EXTENSION-CONTRACT.md](./docs/EXTENSION-CONTRACT.md)):
+
+1. Renders **ordered dropdowns** for declared parameters (`path`, `query`, or `header`).
+2. **Gates** request-body Example Value and Schema until every selector has a value.
+3. **Resolves** the body to a single component schema and example from `x-conditional-schema-map` / `x-conditional-example-map`.
+4. **Clears** downstream selectors and body when an upstream choice changes.
+
+The plugin is **UI-only**: your microservice still owns validation and binding. OpenAPI extensions document intent for humans and tools; the plugin makes Swagger UI behave accordingly.
+
+### When you need it
+
+- Multi-tenant or multi-region APIs where **path/query/header** chooses the payload shape.
+- **Polymorphic onboarding** endpoints (one URL, many device/product configs).
+- Any springdoc-backed service where product owners want **accurate Try-it-out** without maintaining a separate wizard.
+
+When you do **not** need it: a single fixed body schema, or parameters that do not change which DTO applies.
 
 ---
 
@@ -15,10 +57,12 @@ Use it for any API where:
 
 | Document | Audience | Contents |
 |----------|----------|----------|
-| [README.md](./README.md) | Integrators | Quick start, features, registration |
-| [docs/EXTENSION-CONTRACT.md](./docs/EXTENSION-CONTRACT.md) | API authors | Full OpenAPI extension specification |
-| [docs/EXAMPLES.md](./docs/EXAMPLES.md) | API authors | Patterns: 2-level, 3-level, query/header, maps-only |
-| [DEVELOPING.md](./DEVELOPING.md) | Plugin authors | Architecture, build, extend, debug |
+| [README.md](./README.md) | Everyone | Problem statement, quick start |
+| [docs/SPRINGDOC.md](./docs/SPRINGDOC.md) | Spring Boot teams | **Integrate with springdoc in any microservice** |
+| [docs/EXTENSION-CONTRACT.md](./docs/EXTENSION-CONTRACT.md) | API authors | OpenAPI extension specification |
+| [docs/EXAMPLES.md](./docs/EXAMPLES.md) | API authors | YAML patterns (2-level, header, query, …) |
+| [docs/DEMOS.md](./docs/DEMOS.md) | Evaluators | Live demos and screenshots |
+| [DEVELOPING.md](./DEVELOPING.md) | Plugin authors | Build, architecture, debug |
 
 ---
 
@@ -26,14 +70,14 @@ Use it for any API where:
 
 - **Any selector depth** — 1 to N parameters in declared order
 - **path / query / header** — per-selector `in` in `x-conditional.selectors`
-- **Generic extensions** — `x-conditional`, `x-conditional-enum-map`, `x-conditional-schema-map`, `x-conditional-example-map`, `x-visibility`
+- **Generic extensions** — configurable `x-conditional-*` names, no hard-coded domain prefixes
 - **Request body gating** — hide Example/Schema until all selectors are set
-- **Resolved schema** — inject full component schema (not a misleading `oneOf` list)
-- **Configurable** — custom extension names, `keyJoin`, `leafKeyOnly` via plugin factory config
+- **Resolved schema** — full component schema, not a misleading `oneOf` tree
+- **Configurable** — custom extension names, `keyJoin`, `leafKeyOnly`
 
 ---
 
-## Quick start
+## Quick start (any Swagger UI host)
 
 ### 1. Build
 
@@ -44,15 +88,7 @@ npm run build
 Output: `dist/generic-conditional-visibility-plugin.js`  
 Global: `SwaggerUIGenericConditionalVisibilityPlugin`
 
-### 2. Load script
-
-```html
-<script src="/swagger-ui/swagger-ui-bundle.js"></script>
-<script src="/swagger-ui-plugins/generic-conditional-visibility-plugin.js"></script>
-<script src="/swagger-ui/swagger-initializer.js"></script>
-```
-
-### 3. Register plugin
+### 2. Register
 
 ```javascript
 window.ui = SwaggerUIBundle({
@@ -67,19 +103,7 @@ window.ui = SwaggerUIBundle({
 });
 ```
 
-With options:
-
-```javascript
-plugins: [
-  () =>
-    SwaggerUIGenericConditionalVisibilityPlugin({
-      keyJoin: "::",
-      leafKeyOnly: false,
-    }),
-],
-```
-
-### 4. Annotate your OpenAPI operation
+### 3. Annotate OpenAPI
 
 ```yaml
 post:
@@ -88,54 +112,65 @@ post:
     selectors:
       - { name: region, in: path }
       - { name: tier, in: path }
-  x-conditional-enum-map:
-    region:
-      us-east:
-        tier: [gold, silver]
   x-conditional-schema-map:
     us-east|gold: GoldConfig
-    us-east|silver: SilverConfig
-  x-conditional-example-map:
-    us-east|gold: { replicas: 3 }
 ```
 
-See [docs/EXTENSION-CONTRACT.md](./docs/EXTENSION-CONTRACT.md) for the full contract.
+Full contract: [docs/EXTENSION-CONTRACT.md](./docs/EXTENSION-CONTRACT.md).
 
 ---
 
-## Minimal OpenAPI checklist
+## Spring Boot + springdoc (microservices)
 
-1. Operation has `x-conditional` with `selectors` (ordered).
-2. Each selector matches a real parameter (`name` + `in`).
-3. Provide `x-conditional-enum-map` and/or `x-visibility.when` on schemas for dropdown values.
-4. For body resolution: `x-conditional-schema-map` + optional `x-conditional-example-map` keyed by `keyJoin`.
-5. Register `SwaggerUIGenericConditionalVisibilityPlugin` in Swagger UI `plugins`.
+Most Java microservices use **springdoc-openapi** for `/v3/api-docs` and embedded Swagger UI.
+
+**Auto-configuration (recommended):** add the Spring Boot starter from `spring-boot-starter/` — it registers the `@Primary` index transformer and bundles the plugin JS. Configure with `swagger.ui.conditional-visibility.enabled` (default `true`).
+
+**Manual setup:** copy the plugin bundle, register a `@Primary` `SwaggerIndexTransformer`, and add `x-conditional` maps via `OpenApiCustomizer`.
+
+**Full guide:** [docs/SPRINGDOC.md](./docs/SPRINGDOC.md)
 
 ---
 
-## Behaviour summary
+## Live demos (no backend)
 
-| User action | Plugin behaviour |
-|-------------|------------------|
-| Opens operation | Banner shows resolved-schema panel (empty until complete) |
-| Incomplete selectors | Request body section shows guidance text only |
-| Changes selector at level *i* | Clears all deeper selectors and request body |
-| Completes all selectors | Shows filtered schema, example JSON, Try-it-out body |
+```bash
+npm run build
+npm run demo
+```
+
+Open [http://localhost:9080/demo/](http://localhost:9080/demo/) — catalog (2 path selectors) and deployments (path + path + header). Full walkthrough and screenshots: [docs/DEMOS.md](./docs/DEMOS.md).
+
+### Catalog demo (2 selectors)
+
+| No selection (body gated) | Single selector (`region`) | Both selectors (resolved body) |
+|:---:|:---:|:---:|
+| ![](./docs/images/catalog-no-selection.png) | ![](./docs/images/catalog-single-selection.png) | ![](./docs/images/catalog-complete-example.png) |
+
+### Deployments demo (3 selectors)
+
+| Single (`region`) | Partial (`region` + `tier`) | Complete (all three) |
+|:---:|:---:|:---:|
+| ![](./docs/images/deployments-single-selection.png) | ![](./docs/images/deployments-partial-selection.png) | ![](./docs/images/deployments-complete.png) |
+
+Regenerate images: `npm run screenshots` (see [docs/DEMOS.md](./docs/DEMOS.md)).
 
 ---
 
 ## Repository layout
 
 ```
-├── src/plugin.js              # Plugin implementation
-├── scripts/build.mjs          # IIFE bundle
-├── dist/                      # Build output (gitignored)
+├── src/plugin.js
+├── dist/generic-conditional-visibility-plugin.js
+├── spring-boot-starter/     # Spring Boot auto-configuration
+├── demo/                    # Static Swagger UI demos
 ├── docs/
+│   ├── images/              # Demo screenshots (npm run screenshots)
+│   ├── DEMOS.md
+│   ├── SPRINGDOC.md         # springdoc integration
 │   ├── EXTENSION-CONTRACT.md
 │   └── EXAMPLES.md
-├── examples/sample-openapi.yaml
-├── README.md
-└── DEVELOPING.md
+└── examples/
 ```
 
 ---
