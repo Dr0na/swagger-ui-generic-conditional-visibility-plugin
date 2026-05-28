@@ -141,7 +141,7 @@ npm run build
 npm run demo
 ```
 
-**Live (GitHub Pages):** [https://dr0na.github.io/swagger-ui-generic-conditional-visibility-plugin/](https://dr0na.github.io/swagger-ui-generic-conditional-visibility-plugin/)
+**Live (GitHub Pages):** [https://dr0na.github.io/swagger-ui-generic-conditional-visibility-plugin/](https://dr0na.github.io/swagger-ui-generic-conditional-visibility-plugin/) — enable once in [Settings → Pages](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/settings/pages) (source: **GitHub Actions**); see [docs/PAGES.md](./docs/PAGES.md).
 
 **Local:** [http://localhost:9080/demo/](http://localhost:9080/demo/) (`npm run demo`). Full walkthrough and screenshots: [docs/DEMOS.md](./docs/DEMOS.md).
 
