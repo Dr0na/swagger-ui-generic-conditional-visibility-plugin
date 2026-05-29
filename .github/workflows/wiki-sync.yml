@@ -22,14 +22,13 @@ jobs:
           WIKI_URL: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git
         run: |
           set -e
-          if git clone "$WIKI_URL" wiki-repo 2>/dev/null; then
-            echo "Cloned existing wiki."
-          else
-            echo "Creating new wiki repository..."
-            mkdir wiki-repo
-            git -C wiki-repo init -b main
-            git -C wiki-repo remote add origin "$WIKI_URL"
+          if ! git clone "$WIKI_URL" wiki-repo 2>/dev/null; then
+            echo "::error::Wiki git repo not found. Create the first page in the browser:"
+            echo "https://github.com/${{ github.repository }}/wiki → Create the first page → Save"
+            echo "Then re-run this workflow. See docs/WIKI.md"
+            exit 1
           fi
+          echo "Cloned existing wiki."
           cp wiki/*.md wiki-repo/
           cd wiki-repo
           git config user.name "github-actions[bot]"

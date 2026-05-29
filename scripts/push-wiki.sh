@@ -13,10 +13,17 @@ rm -rf "$WORKDIR"
 if git clone "$WIKI_REMOTE" "$WORKDIR" 2>/dev/null; then
   echo "Cloned existing wiki."
 else
-  echo "Initializing new wiki repository..."
-  mkdir -p "$WORKDIR"
-  git -C "$WORKDIR" init -b main
-  git -C "$WORKDIR" remote add origin "$WIKI_REMOTE"
+  echo ""
+  echo "ERROR: Wiki git repository does not exist yet."
+  echo ""
+  echo "GitHub only creates *.wiki.git after the FIRST page is saved in the browser:"
+  echo "  https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/wiki"
+  echo "  → Click 'Create the first page' → Title: Home → Save"
+  echo ""
+  echo "Then run: npm run wiki:push"
+  echo ""
+  echo "See docs/WIKI.md for full instructions."
+  exit 1
 fi
 
 cp "$ROOT"/wiki/*.md "$WORKDIR"/
