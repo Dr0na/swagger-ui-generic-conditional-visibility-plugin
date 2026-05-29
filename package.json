@@ -30,6 +30,6 @@
     "url": "https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin.git"
   },
   "devDependencies": {
-    "playwright": "^1.49.1"
+    "playwright": "^1.55.1"
   }
 }
