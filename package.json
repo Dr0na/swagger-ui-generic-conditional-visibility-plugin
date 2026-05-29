@@ -15,6 +15,7 @@
     "demo": "npm run build && npx --yes http-server . -p 9080 -c-1",
     "verify-demos": "node scripts/verify-demos.mjs",
     "pages:prepare": "npm run build && node scripts/prepare-pages.mjs",
+    "wiki:push": "bash scripts/push-wiki.sh",
     "screenshots": "npm run build && node scripts/capture-screenshots.mjs"
   },
   "keywords": [

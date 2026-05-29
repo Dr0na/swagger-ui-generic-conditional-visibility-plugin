@@ -179,6 +179,10 @@ Regenerate images: `npm run screenshots` (see [docs/DEMOS.md](./docs/DEMOS.md)).
 
 ---
 
+## Wiki
+
+Project roadmap, status, and guides: **[GitHub Wiki](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/wiki)** (source in [`wiki/`](./wiki/); publish with `npm run wiki:push` after enabling Wikis in repo settings).
+
 ## Community
 
 - [Contributing](./CONTRIBUTING.md)
