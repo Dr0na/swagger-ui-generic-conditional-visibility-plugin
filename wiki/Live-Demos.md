@@ -1,21 +1,30 @@
 # Live demos
 
-Try the plugin **without** Spring Boot or a backend API.
+Try the plugin in your browser — **no Spring Boot**, no backend, no install required for the online demos.
 
-## Online
+## Try online (recommended)
 
-**https://dr0na.github.io/swagger-ui-generic-conditional-visibility-plugin/**
+**Demo hub:** https://dr0na.github.io/swagger-ui-generic-conditional-visibility-plugin/
 
-If you see 404, enable Pages once: [Settings → Pages](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/settings/pages) → source **GitHub Actions**, then re-run the **Deploy GitHub Pages** workflow.
+| Demo | Link | What you will see |
+|------|------|-------------------|
+| **Catalog** (2 path selectors) | [Open catalog demo](https://dr0na.github.io/swagger-ui-generic-conditional-visibility-plugin/catalog/) | `region` + `tier` — request body stays hidden until both are chosen |
+| **Deployments** (3 selectors) | [Open deployments demo](https://dr0na.github.io/swagger-ui-generic-conditional-visibility-plugin/deployments/) | Path + path + `X-Channel` header — three-step cascade |
 
-## Scenarios
+### What to do in each demo
 
-| Demo | Selectors | What to try |
-|------|-----------|-------------|
-| **Catalog** | `region`, `tier` (path) | Body hidden until both set; example/schema match one DTO |
-| **Deployments** | `region`, `tier` (path), `X-Channel` (header) | Three-step cascade; mixed `in` types |
+1. Expand the **POST** operation.
+2. Use the **dropdowns** for parameters (not plain text fields).
+3. Notice the **request body** shows a short gate message until every selector has a value.
+4. Pick the first selector — downstream selectors and the body update; the body may still be gated.
+5. Complete **all** selectors — **Example Value** and **Schema** should show **one** DTO, not a full `oneOf` list.
+6. Change an earlier selector — later choices and the body **reset**.
 
-## Local
+If a demo page does not load, use the [local setup](#run-locally) below or report an [issue](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/issues/new?template=bug_report.yml).
+
+## Run locally
+
+For contributors or offline use:
 
 ```bash
 git clone https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin.git
@@ -23,10 +32,16 @@ cd swagger-ui-generic-conditional-visibility-plugin
 npm ci && npm run demo
 ```
 
-Open http://localhost:9080/demo/
+Open http://localhost:9080/demo/ and choose **Catalog** or **Deployments**.
+
+Requires **Node.js 20+**.
 
 ## Screenshots
 
-See the [README](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin#live-demos-no-backend) or [docs/DEMOS.md](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/blob/main/docs/DEMOS.md).
+Walkthrough images are in the repository [README](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin#live-demos-no-backend) and [docs/DEMOS.md](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/blob/main/docs/DEMOS.md).
 
-Regenerate: `npm run screenshots` (requires Playwright).
+## Next steps
+
+- New to the extensions? → [[Getting-Started]]
+- Integrating with Java? → [[Spring-Boot-Integration]]
+- Something wrong? → [[Troubleshooting]]

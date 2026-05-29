@@ -18,20 +18,23 @@
 | Transformer not applied | URL must match `**/swagger-ui/**/index.html` |
 | Two transformers | Only one `@Primary` bean |
 
-## Demos / Pages
+## Demos
 
 | Symptom | Fix |
 |---------|-----|
-| GitHub Pages 404 | Enable Pages → **GitHub Actions**; re-run deploy workflow |
-| Broken styles on dark background | Demos use light `#swagger-ui` panel — see `demo/shared/demo.css` |
+| Online demo URL does not load | Try [[Live-Demos#run-locally]] or check [GitHub Pages status](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/deployments/github-pages) |
+| Dropdowns missing | Hard-refresh the page; confirm you expanded the POST operation |
+| Body never unlocks | Select **every** selector in order (see [[Live-Demos#what-to-do-in-each-demo]]) |
+| Broken colours / contrast | Known quirk: dark page chrome + light Swagger UI panel — content inside the white panel should be readable |
+
+## Contributors (build & publish)
+
+| Symptom | Fix |
+|---------|-----|
 | `dist/` 404 locally | Run `npm run build` first |
-
-## Build
-
-| Symptom | Fix |
-|---------|-----|
 | Maven starter fails | Run `npm run build` before `mvn package` in `spring-boot-starter/` |
-| Screenshots fail | `npx playwright install chromium`; server on port 9081 for `npm run screenshots` |
+| GitHub Pages 404 for everyone | Repo maintainer: Settings → Pages → **GitHub Actions**, re-run **Deploy GitHub Pages** |
+| Screenshots / wiki sync fail | See [docs/DEMOS.md](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/blob/main/docs/DEMOS.md) and [docs/WIKI.md](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/blob/main/docs/WIKI.md) |
 
 ## Get help
 
