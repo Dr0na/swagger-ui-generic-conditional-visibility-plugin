@@ -9,3 +9,5 @@
 | [DEMOS.md](./DEMOS.md) | Local static demos, screenshots (`npm run demo`, `npm run screenshots`) |
 | [../README.md](../README.md) | User guide: install, register, quick start |
 | [../DEVELOPING.md](../DEVELOPING.md) | Plugin architecture, build, debug, extend |
+| [../CONTRIBUTING.md](../CONTRIBUTING.md) | How to contribute |
+| [../SECURITY.md](../SECURITY.md) | Security reporting |

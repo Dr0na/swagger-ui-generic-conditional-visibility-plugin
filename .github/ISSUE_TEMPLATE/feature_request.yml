@@ -1,0 +1,52 @@
+name: Feature request
+description: Suggest an improvement or new capability
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the problem and proposed solution. Extension contract changes affect all consumers — see [EXTENSION-CONTRACT.md](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/blob/main/docs/EXTENSION-CONTRACT.md).
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What limitation or pain point does this address?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How should the plugin or docs behave?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches you thought about
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - Plugin (Swagger UI)
+        - OpenAPI extension contract
+        - Spring Boot starter
+        - Demos / documentation
+        - CI / tooling
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      options:
+        - label: I am willing to open a PR for this (optional)
+        - label: I understand breaking extension changes require a major version discussion

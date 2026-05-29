@@ -179,6 +179,12 @@ Regenerate images: `npm run screenshots` (see [docs/DEMOS.md](./docs/DEMOS.md)).
 
 ---
 
+## Community
+
+- [Contributing](./CONTRIBUTING.md)
+- [Code of conduct](./CODE_OF_CONDUCT.md)
+- [Security policy](./SECURITY.md)
+
 ## License
 
 Apache-2.0

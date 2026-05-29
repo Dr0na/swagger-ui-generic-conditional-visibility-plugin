@@ -1,0 +1,79 @@
+name: Bug report
+description: Plugin, demo, or Spring starter does not behave as documented
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. For **security** issues, use a [private advisory](https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/security/advisories/new) instead.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: What did you expect vs what you saw?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Minimal OpenAPI snippet, demo URL, or springdoc setup
+      placeholder: |
+        1. Open catalog demo / Swagger UI operation …
+        2. Select region = us-east …
+        3. Request body still shows oneOf …
+    validations:
+      required: true
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      description: Release tag, commit SHA, or `main`
+      placeholder: "v1.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: swagger-ui-version
+    attributes:
+      label: Swagger UI version
+      placeholder: "5.18.2"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: integration
+    attributes:
+      label: Integration
+      options:
+        - Static HTML demo
+        - springdoc (Spring Boot starter)
+        - Manual Swagger UI wiring
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser / OS (if UI issue)
+      placeholder: "Chrome 131 / macOS"
+
+  - type: textarea
+    id: openapi
+    attributes:
+      label: Relevant OpenAPI (x-conditional) snippet
+      description: Operation extensions and selector definitions
+      render: yaml
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues for duplicates
+          required: true
