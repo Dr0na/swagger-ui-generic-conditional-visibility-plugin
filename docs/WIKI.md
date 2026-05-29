@@ -61,5 +61,6 @@ You should then see all pages (Roadmap, Project status, Getting started, etc.) i
 |---------|-----|
 | Wiki tab missing | **Settings → General → Features → Wikis** ✓ |
 | `Repository not found` on push | Complete **Step 1** above first |
+| `src refspec main does not match any` | Wiki uses branch **`master`** — use latest `wiki-sync` workflow / `push-wiki.sh` (pushes current branch) |
 | Push denied to `vnalwar` | Use `git@github-Dr0na:...wiki.git` (see repo `.git/config` for main) |
 | Sync Wiki workflow fails | Bootstrap in browser, then re-run workflow |

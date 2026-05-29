@@ -39,4 +39,7 @@ jobs:
             exit 0
           fi
           git commit -m "Sync wiki from ${{ github.sha }}"
-          git push origin main
+          # GitHub Wiki uses branch "master", not "main"
+          WIKI_BRANCH=$(git branch --show-current)
+          echo "Pushing to wiki branch: ${WIKI_BRANCH}"
+          git push origin "HEAD:${WIKI_BRANCH}"

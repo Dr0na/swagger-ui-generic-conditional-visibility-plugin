@@ -37,5 +37,8 @@ fi
 git -C "$WORKDIR" config user.name "${WIKI_USER_NAME:-Dr0na}"
 git -C "$WORKDIR" config user.email "${WIKI_USER_EMAIL:-4620328+Dr0na@users.noreply.github.com}"
 git commit -m "Sync wiki from main repository"
-git push -u origin main
+# GitHub Wiki uses branch "master", not "main"
+WIKI_BRANCH=$(git branch --show-current)
+echo "Pushing to wiki branch: ${WIKI_BRANCH}"
+git push -u origin "HEAD:${WIKI_BRANCH}"
 echo "Wiki published: https://github.com/Dr0na/swagger-ui-generic-conditional-visibility-plugin/wiki"
